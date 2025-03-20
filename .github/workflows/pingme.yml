@@ -2,13 +2,18 @@ name: Ping Website
 
 on:
   schedule:
-    - cron: '*/4 * * * *'
+    - cron: '*/4 * * * *'  # Alle 4 Minuten
 
 jobs:
-  ping: 
+  ping:
     runs-on: ubuntu-latest
 
     steps:
       - name: Ping die Website
-        run: curl -s -o /dev/null -w "% {http_code}" https://telbot-7bag.onrender.com/ || echo "Ping failed"
-        
+        run: |
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://telbot-7bag.onrender.com/)
+          if [ "$STATUS_CODE" -eq 200 ]; then
+            echo "Ping erfolgreich! HTTP-Statuscode: $STATUS_CODE"
+          else
+            echo "Ping fehlgeschlagen! HTTP-Statuscode: $STATUS_CODE"
+          fi
