@@ -1,1 +1,14 @@
+name: Ping Website
 
+on:
+  schedule:
+    - cron: '*/4 * * * *'
+
+jobs:
+  ping: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping die Website
+        run: curl -s -o /dev/null -w "% {http_code}" https://telbot-7bag.onrender.com/ || echo "Ping failed"
+        
